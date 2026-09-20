@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "task-gateway-local": {
+      "type": "stdio",
+      "command": "${CODEBUDDY_PLUGIN_ROOT}/runtime/venv/Scripts/python.exe",
+      "args": [
+        "-m",
+        "taskgateway.mcp_server",
+        "--index",
+        "${CODEBUDDY_PLUGIN_ROOT}/runtime/index.json"
+      ],
+      "startupTimeoutMs": 30000,
+      "timeoutMs": 120000
+    }
+  }
+}

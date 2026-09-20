@@ -1,0 +1,22 @@
+{
+  "name": "task-gateway-local",
+  "version": "1.0.0",
+  "description": "Portable WorkBuddy plugin exposing TaskGateway-Local search, plan, and invoke MCP tools.",
+  "author": {
+    "name": "wany-i"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/wany-i/TaskGateway-Local",
+  "keywords": ["workbuddy", "mcp", "task-gateway", "local"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "TaskGateway Local",
+    "shortDescription": "Local gated resource discovery and routing",
+    "longDescription": "Exposes TaskGateway-Local search, plan, and fail-closed invoke tools over stdio MCP.",
+    "developerName": "wany-i",
+    "category": "Productivity",
+    "capabilities": ["Read", "Route"],
+    "defaultPrompt": ["Search local TaskGateway resources"]
+  }
+}

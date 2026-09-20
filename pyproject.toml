@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "taskgateway-local"
+version = "1.0.0"
+description = "Dependency-free TaskGateway core with an optional MCP SDK v2 STDIO server"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "wany-i" }]
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["mcp", "agent-tools", "local-first", "task-routing"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/wany-i/TaskGateway-Local"
+Repository = "https://github.com/wany-i/TaskGateway-Local"
+Issues = "https://github.com/wany-i/TaskGateway-Local/issues"
+
+[project.optional-dependencies]
+mcp = ["mcp==2.2.0"]
+test = ["pytest>=8"]
+
+[project.scripts]
+taskgateway = "taskgateway.core:main"
+taskgateway-mcp = "taskgateway.mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/taskgateway"]
+include = ["src/taskgateway/index.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
