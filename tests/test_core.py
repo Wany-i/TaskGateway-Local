@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
+import pytest
+
 from taskgateway import TaskGateway
+from taskgateway.invocation import decision_id_for
 
 
 def test_search_plan_invoke_preserve_legacy_contract(fixture_index: Path) -> None:
@@ -41,4 +45,69 @@ def test_invoke_invalid_decision_id_is_fail_closed(fixture_index: Path) -> None:
 
     assert result["response"]["status"] == "blocked"
     assert result["response"]["errors"][0]["code"] == "DECISION_UNKNOWN"
-    assert result["response"]["data"] == {}
+    assert result["response"]["data"]["executed"] is False
+
+
+@pytest.mark.parametrize(
+    ("resource_ref", "decision_id", "operation", "code"),
+    [
+        ("tool://readme", "invalid", "render_call", "DECISION_UNKNOWN"),
+        (
+            "tool://missing",
+            decision_id_for("tool://missing", "read_only"),
+            "render_call",
+            "NOT_FOUND",
+        ),
+        (
+            "tool://disabled",
+            decision_id_for("tool://disabled", "read_only"),
+            "render_call",
+            "GATE_DENIED",
+        ),
+        (
+            "tool://readme",
+            decision_id_for("tool://readme", "read_only"),
+            "execute",
+            "REQUEST_INVALID",
+        ),
+    ],
+)
+def test_blocked_invoke_returns_executed_false(
+    fixture_index: Path,
+    resource_ref: str,
+    decision_id: str,
+    operation: str,
+    code: str,
+) -> None:
+    gateway = TaskGateway(index_path=fixture_index)
+
+    result = gateway.invoke(resource_ref, decision_id, operation)
+
+    assert result["response"]["status"] == "blocked"
+    assert result["response"]["errors"][0]["code"] == code
+    assert result["response"]["data"]["executed"] is False
+
+
+def test_path_missing_invoke_returns_executed_false(fixture_index: Path) -> None:
+    payload = json.loads(fixture_index.read_text(encoding="utf-8"))
+    payload["items"].append(
+        {
+            "ref": "tool://missing-path",
+            "type": "tool",
+            "name": "missing path tool",
+            "path": str(fixture_index.parent / "missing.md"),
+            "usage": "never",
+            "disabled": False,
+        }
+    )
+    fixture_index.write_text(json.dumps(payload), encoding="utf-8")
+    gateway = TaskGateway(index_path=fixture_index)
+
+    result = gateway.invoke(
+        "tool://missing-path",
+        decision_id_for("tool://missing-path", "read_only"),
+    )
+
+    assert result["response"]["status"] == "blocked"
+    assert result["response"]["errors"][0]["code"] == "PATH_MISSING"
+    assert result["response"]["data"]["executed"] is False

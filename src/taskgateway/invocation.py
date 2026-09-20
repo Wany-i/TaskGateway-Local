@@ -45,7 +45,7 @@ def _blocked(
         "response": {
             "status": "blocked",
             "request_id": request_id,
-            "data": {},
+            "data": {"executed": False},
             "errors": [{"code": code, "message": message, "retryable": False}],
             "warnings": [],
             "side_effects": [],
