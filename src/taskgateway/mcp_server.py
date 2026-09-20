@@ -20,7 +20,7 @@ def create_server(gateway: TaskGateway) -> MCPServer:
     """Create a v2 MCP server bound to one configured gateway."""
     server = MCPServer(
         name="taskgateway",
-        version="1.0.0",
+        version="1.0.1",
         description="Read-only search, planning, and fail-closed invocation rendering.",
         instructions="invoke renders commands only; it never executes them.",
     )

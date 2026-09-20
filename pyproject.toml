@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "taskgateway-local"
-version = "1.0.0"
+version = "1.0.1"
 description = "Dependency-free TaskGateway core with an optional MCP SDK v2 STDIO server"
 readme = "README.md"
 license = "MIT"

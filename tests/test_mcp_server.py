@@ -71,6 +71,7 @@ def test_mcp_invoke_invalid_decision_id_is_blocked(fixture_index: Path) -> None:
     payload = result.structured_content
     assert payload["response"]["status"] == "blocked"
     assert payload["response"]["errors"][0]["code"] == "DECISION_UNKNOWN"
+    assert payload["response"]["data"]["executed"] is False
 
 
 def test_mcp_plan_denies_budget_outside_read_only(fixture_index: Path) -> None:
