@@ -27,7 +27,7 @@ Repository = "https://github.com/wany-i/TaskGateway-Local"
 Issues = "https://github.com/wany-i/TaskGateway-Local/issues"
 
 [project.optional-dependencies]
-mcp = ["mcp==2.2.0"]
+mcp = ["mcp==2.3.0"]
 test = ["pytest>=8"]
 
 [project.scripts]
